@@ -1,4 +1,4 @@
-package homework.bankaccount;
+package homework;
 
 public class accounts {
     public static void main(String[] args)

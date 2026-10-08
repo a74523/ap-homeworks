@@ -1,4 +1,4 @@
-package homework.bankaccount;
+package homework;
 /**
  * Represents a bank account with an owner and a balance.
  *
