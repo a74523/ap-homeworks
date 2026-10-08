@@ -3,7 +3,7 @@ package homework;
  * Represents a bank account with an owner and a balance.
  *
  * @author Anfisa
- * @version 1.0
+ * @version 2.0
  */
 public class BankAccount
 {
