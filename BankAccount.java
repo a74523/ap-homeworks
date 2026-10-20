@@ -1,118 +1,109 @@
-package homework;
 /**
- * Represents a bank account with an owner and a balance.
+ * A bank account with a balance that can never go below zero.
  *
  * @author Anfisa
- * @version 2.0
+ * @version 1.0
  */
-public class BankAccount
-{
-    // One total shared by all BankAccount objects
+public class BankAccount{
+    // class variables — one copy, shared by all accounts
+    private static int numAccounts = 0;
+    public static final double MIN_BALANCE = 0.0;
     private static double totalTransactions = 0.0;
 
-    // Every account has its own owner and balance
+    // instance variables — every account has its own
     private String owner;
     private double balance;
 
-    /**
-     * Creates a new bank account.
-     *
-     * @param owner the name of the account owner
-     * @param balance the starting balance
-     */
+    // constructors
     public BankAccount(String owner, double balance)
     {
         this.owner = owner;
         this.balance = balance;
+        numAccounts++;
     }
 
-    /**
-     * Returns the owner of the account.
-     *
-     * @return the owner's name
-     */
+    public BankAccount(String owner)
+    {
+        this.owner = owner;
+        balance = 0.0;
+        numAccounts++;
+    }
+
+    // accessor methods
     public String getOwner()
     {
         return owner;
     }
 
-    /**
-     * Returns the current account balance.
-     *
-     * @return the current balance
-     */
     public double getBalance()
     {
         return balance;
     }
 
-    /**
-     * Adds money to the account.
-     * Successful deposits count as transactions.
-     *
-     * @param amount the amount to deposit
-     */
+    // mutator methods
     public void deposit(double amount)
     {
         if (amount > 0)
         {
             balance += amount;
-            totalTransactions += amount;
+            BankAccount.totalTransactions += amount;
         }
     }
 
-    /**
-     * Withdraws money if there is enough money in the account.
-     *
-     * @param amount the amount to withdraw
-     * @return true if the withdrawal succeeds, false otherwise
-     */
     public boolean withdraw(double amount)
     {
-        if (amount > balance || amount <= 0)
+        if (amount > balance)
         {
             return false;
         }
-
         balance -= amount;
-        totalTransactions += amount;
+        BankAccount.totalTransactions += amount;
         return true;
     }
 
-    /**
-     * Transfers money to another bank account.
-     *
-     * @param other the account receiving the money
-     * @param amount the amount to transfer
-     */
+    // methods with object parameters
     public void transferTo(BankAccount other, double amount)
     {
-        if (amount > 0 && amount <= balance)
+        if (withdraw(amount))
         {
-            balance -= amount;
             other.balance += amount;
-
-            totalTransactions += amount;
+            BankAccount.totalTransactions += amount;
         }
     }
 
-    /**
-     * Returns the total amount of all successful transactions.
-     *
-     * @return the total amount processed
-     */
-    public static double getTotalTransactions()
+    public boolean isRicherThan(BankAccount other)
     {
-        return totalTransactions;
+        return this.balance > other.balance;
     }
 
-    /**
-     * Returns account information as text.
-     *
-     * @return owner and balance
-     */
+    // method total transactions 
+    public static double getTotalTransactions()
+    {
+       
+        return BankAccount.totalTransactions;
+    }
+
+    // class method
+    public static int getNumAccounts()
+    {
+        return numAccounts;
+    }
+
     public String toString()
     {
         return owner + ": $" + balance;
     }
+//      public static void main(String[] args)
+//     {
+// BankAccount ana = new BankAccount("Ana", 50.0);
+// BankAccount ben = new BankAccount("Ben");
+
+// ana.deposit(25.5);
+// System.out.println(ana.getBalance());            // 75.5
+// System.out.println(ana.withdraw(100));           // false — not enough money
+// ana.transferTo(ben, 30);
+// System.out.println(ana);                         // Ana: $45.5
+// System.out.println(ben);                         // Ben: $30.0
+// System.out.println(BankAccount.getNumAccounts()); // 2
+//     }
 }
